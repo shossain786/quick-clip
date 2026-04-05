@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — QuickClip</title>
+  <meta name="description" content="Privacy Policy for QuickClip browser extension. We don't collect, store, or transmit your data." />
+  <link rel="icon" href="icons/icon48.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent       : #ff6600;
+      --accent-soft  : #fff5ee;
+      --bg           : #f7f7f5;
+      --surface      : #ffffff;
+      --border       : #e8e8e4;
+      --text-primary : #1a1a18;
+      --text-secondary: #6b6b63;
+      --text-muted   : #a0a098;
+      --success-soft : #e6f6f0;
+      --success      : #22a06b;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg           : #111110;
+        --surface      : #1c1c1a;
+        --border       : #2e2e2c;
+        --text-primary : #f0f0ec;
+        --text-secondary: #9a9a92;
+        --text-muted   : #5a5a54;
+        --accent-soft  : #2a1a0a;
+        --success-soft : #0d2a1e;
+        --success      : #2dbe7e;
+      }
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+      font-size: 16px;
+      padding: 0 16px 80px;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-header__logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    .site-header__name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.3px;
+    }
+
+    .site-header__sep {
+      color: var(--border);
+      font-weight: 300;
+      margin: 0 4px;
+    }
+
+    .site-header__page {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 720px;
+      margin: 48px auto 0;
+    }
+
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--success-soft);
+      color: var(--success);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: 0.2px;
+    }
+
+    .hero__badge::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background-color: var(--success);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .hero__title {
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .hero__title span {
+      color: var(--accent);
+    }
+
+    .hero__subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 540px;
+      line-height: 1.65;
+    }
+
+    .hero__meta {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ── TL;DR Card ── */
+    .tldr {
+      max-width: 720px;
+      margin: 40px auto 0;
+      background-color: var(--accent-soft);
+      border: 1px solid #ffcca8;
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .tldr { border-color: #5a2e00; border-left-color: var(--accent); }
+    }
+
+    .tldr__heading {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .tldr__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tldr__list li {
+      font-size: 0.92rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .tldr__list li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Content ── */
+    .content {
+      max-width: 720px;
+      margin: 48px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .section__number {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .section__title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.2px;
+    }
+
+    .section__body {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.75;
+    }
+
+    .section__body p + p {
+      margin-top: 12px;
+    }
+
+    .section__body a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .section__body a:hover {
+      opacity: 0.75;
+    }
+
+    .permission-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.88rem;
+    }
+
+    .permission-table th {
+      text-align: left;
+      padding: 10px 14px;
+      background-color: var(--bg);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .permission-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+
+    .permission-table td:first-child {
+      font-family: monospace;
+      font-size: 0.82rem;
+      color: var(--accent);
+      white-space: nowrap;
+      width: 180px;
+    }
+
+    .permission-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      max-width: 720px;
+      margin: 64px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .site-footer a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .site-footer a:hover {
+      opacity: 0.75;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <img src="icons/icon48.png" alt="QuickClip logo" class="site-header__logo" />
+    <span class="site-header__name">QuickClip</span>
+    <span class="site-header__sep">|</span>
+    <span class="site-header__page">Privacy Policy</span>
+  </header>
+
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__badge">No data collection</div>
+    <h1 class="hero__title">Your clipboard.<br /><span>Your data.</span></h1>
+    <p class="hero__subtitle">
+      QuickClip processes everything locally inside your browser.
+      Nothing you copy, clean, or convert ever leaves your device.
+    </p>
+    <p class="hero__meta">
+      Effective date: April 5, 2026 &nbsp;·&nbsp; Last updated: April 5, 2026
+    </p>
+  </section>
+
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <p class="tldr__heading">TL;DR — The short version</p>
+    <ul class="tldr__list">
+      <li>We do not collect any personal data.</li>
+      <li>We do not track your browsing activity or clipboard contents.</li>
+      <li>We do not send any data to external servers.</li>
+      <li>All processing happens locally inside your browser.</li>
+      <li>Clipboard history is stored only on your device using browser storage.</li>
+    </ul>
+  </div>
+
+
+  <!-- Policy Sections -->
+  <main class="content">
+
+    <article>
+      <p class="section__number">01</p>
+      <h2 class="section__title">Who we are</h2>
+      <div class="section__body">
+        <p>
+          QuickClip is an open-source browser extension developed by
+          <a href="https://github.com/shossain786" target="_blank" rel="noopener">shossain786</a>.
+          The source code is publicly available at
+          <a href="https://github.com/shossain786/quick-clip" target="_blank" rel="noopener">github.com/shossain786/quick-clip</a>.
+        </p>
+      </div>
+    </article>
+
+    <article>
+      <p class="section__number">02</p>
+      <h2 class="section__title">Data we do not collect</h2>
+      <div class="section__body">
+        <p>QuickClip does not collect, transmit, store on any server, or share any of the following:</p>
+        <ul style="margin-top:12px; padding-left:20px; display:flex; flex-direction:column; gap:6px;">
+          <li>The text you copy, paste, clean, or convert</li>
+          <li>Your browsing history or the URLs of pages you visit</li>
+          <li>Any personally identifiable information</li>
+          <li>Usage analytics or telemetry of any kind</li>
+          <li>Crash reports or diagnostic data</li>
+        </ul>
+      </div>
+    </article>
+
+    <article>
+      <p class="section__number">03</p>
+      <h2 class="section__title">What is stored locally on your device</h2>
+      <div class="section__body">
+        <p>
+          QuickClip uses your browser's built-in local storage (<code>chrome.storage.local</code>)
+          to save two things — both stored exclusively on your own device:
+        </p>
+        <ul style="margin-top:12px; padding-left:20px; display:flex; flex-direction:column; gap:6px;">
+          <li><strong>Clipboard history</strong> — the last 10 items you processed, so you can retrieve them later.</li>
+          <li><strong>Your preferences</strong> — which features are toggled on or off, and your theme choice.</li>
+        </ul>
+        <p style="margin-top:12px;">
+          This data never leaves your browser. You can clear it at any time from the
+          History tab inside the extension popup.
+        </p>
+      </div>
+    </article>
+
+    <article>
+      <p class="section__number">04</p>
+      <h2 class="section__title">Permissions explained</h2>
+      <div class="section__body">
+        <p>QuickClip requests the following browser permissions. Here is exactly why each one is needed:</p>
+        <table class="permission-table">
+          <thead>
+            <tr>
+              <th>Permission</th>
+              <th>Why it is needed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>clipboardRead</td>
+              <td>To read the text you have selected and copied, so it can be cleaned or converted.</td>
+            </tr>
+            <tr>
+              <td>clipboardWrite</td>
+              <td>To write the cleaned or converted text back to your clipboard.</td>
+            </tr>
+            <tr>
+              <td>activeTab</td>
+              <td>To detect copy events on the page you are currently viewing.</td>
+            </tr>
+            <tr>
+              <td>storage</td>
+              <td>To save your preferences and clipboard history locally on your device.</td>
+            </tr>
+            <tr>
+              <td>scripting</td>
+              <td>To inject the clipboard listener script into web pages.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article>
+      <p class="section__number">05</p>
+      <h2 class="section__title">Third-party services</h2>
+      <div class="section__body">
+        <p>
+          QuickClip Phase 1 makes no calls to any external API or third-party service.
+          All text processing — cleaning, conversion, and rephrasing — happens entirely
+          within your browser using local JavaScript.
+        </p>
+        <p>
+          In a future version (Phase 2), an optional AI-powered rephrase feature may be
+          introduced. If and when that happens, this policy will be updated before the
+          feature is released, and it will require explicit opt-in from the user.
+        </p>
+      </div>
+    </article>
+
+    <article>
+      <p class="section__number">06</p>
+      <h2 class="section__title">Children's privacy</h2>
+      <div class="section__body">
+        <p>
+          QuickClip does not knowingly collect any information from anyone,
+          including children under the age of 13. As no data is collected at all,
+          there is nothing to protect in this regard.
+        </p>
+      </div>
+    </article>
+
+    <article>
+      <p class="section__number">07</p>
+      <h2 class="section__title">Changes to this policy</h2>
+      <div class="section__body">
+        <p>
+          If this privacy policy changes, the updated version will be published at this
+          same URL with a revised "Last updated" date at the top of the page. Significant
+          changes will also be noted in the extension's GitHub release notes.
+        </p>
+      </div>
+    </article>
+
+    <article>
+      <p class="section__number">08</p>
+      <h2 class="section__title">Contact</h2>
+      <div class="section__body">
+        <p>
+          Questions about this privacy policy? Open an issue on GitHub at
+          <a href="https://github.com/shossain786/quick-clip/issues" target="_blank" rel="noopener">
+            github.com/shossain786/quick-clip/issues
+          </a>
+          and we will respond as soon as possible.
+        </p>
+      </div>
+    </article>
+
+  </main>
+
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <span>© 2025 QuickClip · MIT License</span>
+    <div style="display:flex; gap:20px;">
+      <a href="https://github.com/shossain786/quick-clip" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://github.com/shossain786/quick-clip/issues" target="_blank" rel="noopener">Report an issue ↗</a>
+    </div>
+  </footer>
+
+</body>
+</html>
