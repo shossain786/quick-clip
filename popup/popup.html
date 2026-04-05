@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickClip</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+
+  <body>
+    <!-- ======================================================
+         ROOT CONTAINER
+         ====================================================== -->
+    <div class="qc-app" id="qc-app">
+
+      <!-- ====================================================
+           HEADER
+           ==================================================== -->
+      <header class="qc-header">
+        <div class="qc-logo">
+          <img src="../icons/icon48.png" alt="QuickClip logo" class="qc-logo__img" />
+          <div class="qc-logo__text">
+            <span class="qc-logo__name">QuickClip</span>
+            <span class="qc-logo__tagline">Copy smarter, paste cleaner.</span>
+          </div>
+        </div>
+
+        <!-- Theme toggle -->
+        <button
+          class="qc-theme-toggle"
+          id="qc-theme-toggle"
+          title="Toggle dark/light mode"
+          aria-label="Toggle theme"
+        >
+          <span class="qc-theme-toggle__icon" id="qc-theme-icon">🌙</span>
+        </button>
+      </header>
+
+
+      <!-- ====================================================
+           TAB NAV
+           ==================================================== -->
+      <nav class="qc-tabs" role="tablist" aria-label="QuickClip sections">
+        <button
+          class="qc-tab qc-tab--active"
+          id="tab-clipboard"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-clipboard"
+          data-tab="clipboard"
+        >
+          ✂️ Clipboard
+        </button>
+        <button
+          class="qc-tab"
+          id="tab-history"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-history"
+          data-tab="history"
+        >
+          🕒 History
+        </button>
+        <button
+          class="qc-tab"
+          id="tab-settings"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-settings"
+          data-tab="settings"
+        >
+          ⚙️ Settings
+        </button>
+      </nav>
+
+
+      <!-- ====================================================
+           PANEL: CLIPBOARD
+           ==================================================== -->
+      <section
+        class="qc-panel qc-panel--active"
+        id="panel-clipboard"
+        role="tabpanel"
+        aria-labelledby="tab-clipboard"
+      >
+        <!-- Text input area -->
+        <div class="qc-input-group">
+          <label class="qc-label" for="qc-input">Paste or type text below</label>
+          <textarea
+            class="qc-textarea"
+            id="qc-input"
+            placeholder="Paste your text here..."
+            rows="5"
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="qc-actions">
+          <button class="qc-btn qc-btn--primary" id="btn-clean">
+            <span class="qc-btn__icon">🧹</span>
+            Clean
+          </button>
+          <button class="qc-btn qc-btn--secondary" id="btn-convert">
+            <span class="qc-btn__icon">🔄</span>
+            Convert
+          </button>
+          <button class="qc-btn qc-btn--secondary" id="btn-rephrase">
+            <span class="qc-btn__icon">✨</span>
+            Rephrase
+          </button>
+        </div>
+
+        <!-- Output area -->
+        <div class="qc-output-group" id="qc-output-group" hidden>
+          <div class="qc-output-header">
+            <label class="qc-label">Result</label>
+            <button class="qc-copy-btn" id="btn-copy-result" title="Copy to clipboard">
+              📋 Copy
+            </button>
+          </div>
+          <div class="qc-output" id="qc-output" aria-live="polite"></div>
+        </div>
+
+        <!-- Status / feedback message -->
+        <div class="qc-status" id="qc-status" aria-live="polite" hidden></div>
+      </section>
+
+
+      <!-- ====================================================
+           PANEL: HISTORY
+           ==================================================== -->
+      <section
+        class="qc-panel"
+        id="panel-history"
+        role="tabpanel"
+        aria-labelledby="tab-history"
+        hidden
+      >
+        <div class="qc-history-header">
+          <span class="qc-label">Last 10 items</span>
+          <button class="qc-link-btn" id="btn-clear-history">Clear all</button>
+        </div>
+
+        <!-- History list — populated by popup.js -->
+        <ul class="qc-history-list" id="qc-history-list" aria-label="Clipboard history">
+          <!-- Items injected dynamically -->
+        </ul>
+
+        <!-- Empty state -->
+        <div class="qc-empty" id="qc-history-empty" hidden>
+          <span class="qc-empty__icon">📋</span>
+          <p class="qc-empty__text">No history yet.<br/>Start copying to see items here.</p>
+        </div>
+      </section>
+
+
+      <!-- ====================================================
+           PANEL: SETTINGS
+           ==================================================== -->
+      <section
+        class="qc-panel"
+        id="panel-settings"
+        role="tabpanel"
+        aria-labelledby="tab-settings"
+        hidden
+      >
+        <div class="qc-settings-list">
+
+          <!-- Auto Clean -->
+          <div class="qc-setting-row">
+            <div class="qc-setting-info">
+              <span class="qc-setting-name">Auto Clean</span>
+              <span class="qc-setting-desc">Strip HTML, styles, and junk formatting</span>
+            </div>
+            <label class="qc-toggle" aria-label="Toggle Auto Clean">
+              <input type="checkbox" id="pref-autoclean" class="qc-toggle__input" />
+              <span class="qc-toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- Smart Conversions -->
+          <div class="qc-setting-row">
+            <div class="qc-setting-info">
+              <span class="qc-setting-name">Smart Conversions</span>
+              <span class="qc-setting-desc">Enable number, currency & date conversion</span>
+            </div>
+            <label class="qc-toggle" aria-label="Toggle Smart Conversions">
+              <input type="checkbox" id="pref-conversions" class="qc-toggle__input" />
+              <span class="qc-toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- Sub-toggle: Numbers -->
+          <div class="qc-setting-row qc-setting-row--sub" id="sub-numbers">
+            <div class="qc-setting-info">
+              <span class="qc-setting-name">Numbers to Words</span>
+              <span class="qc-setting-desc">e.g. 42 → forty-two</span>
+            </div>
+            <label class="qc-toggle" aria-label="Toggle Numbers to Words">
+              <input type="checkbox" id="pref-numbers" class="qc-toggle__input" />
+              <span class="qc-toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- Sub-toggle: Currency -->
+          <div class="qc-setting-row qc-setting-row--sub" id="sub-currency">
+            <div class="qc-setting-info">
+              <span class="qc-setting-name">Currency Conversion</span>
+              <span class="qc-setting-desc">₹ ↔ $ (fixed rate)</span>
+            </div>
+            <label class="qc-toggle" aria-label="Toggle Currency Conversion">
+              <input type="checkbox" id="pref-currency" class="qc-toggle__input" />
+              <span class="qc-toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- Sub-toggle: Dates -->
+          <div class="qc-setting-row qc-setting-row--sub" id="sub-dates">
+            <div class="qc-setting-info">
+              <span class="qc-setting-name">Date Formatting</span>
+              <span class="qc-setting-desc">Converts dates to YYYY-MM-DD</span>
+            </div>
+            <label class="qc-toggle" aria-label="Toggle Date Formatting">
+              <input type="checkbox" id="pref-dates" class="qc-toggle__input" />
+              <span class="qc-toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- Quick Rephrase -->
+          <div class="qc-setting-row">
+            <div class="qc-setting-info">
+              <span class="qc-setting-name">Quick Rephrase</span>
+              <span class="qc-setting-desc">AI rephrase — Phase 2 feature</span>
+            </div>
+            <label class="qc-toggle" aria-label="Toggle Quick Rephrase">
+              <input type="checkbox" id="pref-rephrase" class="qc-toggle__input" disabled />
+              <span class="qc-toggle__track qc-toggle__track--disabled"></span>
+            </label>
+          </div>
+
+        </div>
+
+        <!-- Version info -->
+        <footer class="qc-settings-footer">
+          <span>QuickClip v1.0.0</span>
+          <a
+            href="https://github.com/your-username/quickclip"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="qc-link"
+          >GitHub ↗</a>
+        </footer>
+      </section>
+
+    </div><!-- /.qc-app -->
+
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>

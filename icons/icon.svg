@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+
+  <!-- Background rounded square -->
+  <rect width="128" height="128" rx="28" fill="#ff6600"/>
+
+  <!-- Clipboard body -->
+  <rect x="32" y="38" width="64" height="72" rx="6"
+        fill="rgba(255,255,255,0.15)" stroke="#ffffff" stroke-width="3.5"/>
+
+  <!-- Clipboard top clip bar -->
+  <rect x="47" y="30" width="34" height="14" rx="4"
+        fill="none" stroke="#ffffff" stroke-width="3.5"/>
+
+  <!-- Clip notch (hides inner part of the bar) -->
+  <rect x="55" y="30" width="18" height="9" rx="2" fill="#ff6600"/>
+
+  <!-- Lightning bolt (the "quick" symbol) -->
+  <polygon points="74,54 60,80 68,80 58,102 80,72 70,72" fill="#ffffff"/>
+
+</svg>
