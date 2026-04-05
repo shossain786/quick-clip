@@ -116,14 +116,17 @@ function initClipboardPanel() {
   const outputGroup = document.getElementById('qc-output-group');
   const outputEl    = document.getElementById('qc-output');
 
-  // --- Clean button ---
+  // --- Clean button — strips formatting only, no conversions ---
   btnClean.addEventListener('click', async () => {
     const text = input.value.trim();
     if (!text) return showStatus('Please enter some text first.', 'error');
 
     setButtonLoading(btnClean, true);
 
-    const response = await sendMessage(MSG.PROCESS_CLIPBOARD, { text });
+    const response = await sendMessage(MSG.PROCESS_CLIPBOARD, {
+      text,
+      skipConvert: true,   // Clean only — never run conversions
+    });
 
     setButtonLoading(btnClean, false);
 
@@ -135,19 +138,16 @@ function initClipboardPanel() {
     }
   });
 
-  // --- Convert button ---
+  // --- Convert button — runs conversions only, no formatting cleanup ---
   btnConvert.addEventListener('click', async () => {
     const text = input.value.trim();
     if (!text) return showStatus('Please enter some text first.', 'error');
 
     setButtonLoading(btnConvert, true);
 
-    // Send with a flag so background skips cleaning, only converts
-    const prefs    = await sendMessage(MSG.GET_PREFERENCES);
     const response = await sendMessage(MSG.PROCESS_CLIPBOARD, {
       text,
-      skipClean: true,
-      prefs: prefs?.data,
+      skipClean: true,     // Convert only — never strip formatting
     });
 
     setButtonLoading(btnConvert, false);

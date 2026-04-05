@@ -94,13 +94,16 @@ async function handleMessage(message) {
 
 
 // ------------------------------------------------------------
-// Handler: Process clipboard text (clean + convert)
+// Handler: Process clipboard text (clean and/or convert)
 // ------------------------------------------------------------
 
 /**
- * @param {{ text: string }} payload
+ * @param {{ text: string, skipClean: boolean, skipConvert: boolean }} payload
+ *
+ * skipClean   — when true, formatting cleanup is skipped (Convert button)
+ * skipConvert — when true, smart conversions are skipped (Clean button)
  */
-async function handleProcessClipboard({ text } = {}) {
+async function handleProcessClipboard({ text, skipClean = false, skipConvert = false } = {}) {
   if (!text || typeof text !== 'string') {
     return { success: false, error: 'No text provided.' };
   }
@@ -109,13 +112,15 @@ async function handleProcessClipboard({ text } = {}) {
 
   let processed = text;
 
-  // Step 1: Clean formatting if enabled
-  if (prefs.autoclean) {
+  // Step 1: Clean formatting
+  // Runs when autoclean is enabled in prefs AND caller did not skip it
+  if (prefs.autoclean && !skipClean) {
     processed = cleanText(processed);
   }
 
-  // Step 2: Run smart conversions if enabled
-  if (prefs.conversions) {
+  // Step 2: Smart conversions
+  // Runs when conversions are enabled in prefs AND caller did not skip it
+  if (prefs.conversions && !skipConvert) {
     processed = convertText(processed, {
       numbers    : prefs.convertNumbers,
       currency   : prefs.convertCurrency,

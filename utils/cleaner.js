@@ -226,9 +226,10 @@ function normalizeUnicode(text) {
     [/[\u201C\u201D\u201E\u201F]/g, '"'],   // " " „ ‟ → "
     [/[\u00AB\u00BB]/g,             '"'],   // « » → "
 
-    // Dashes
+    // Dashes & hyphens
     [/[\u2013\u2014]/g, '-'],               // – — → -
     [/\u2212/g,         '-'],               // − (minus sign) → -
+    [/\u2011/g,         '-'],               // ‑ (non-breaking hyphen) → -
 
     // Ellipsis
     [/\u2026/g, '...'],                     // … → ...
