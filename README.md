@@ -231,6 +231,12 @@ MIT — free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
 
 ---
 
+## Privacy Policy
+
+See the full [Privacy Policy](https://shossain786.github.io/quick-clip/privacy.html).
+
+---
+
 ## Author
 
 Built by [@shossain786](https://github.com/shossain786).  
