@@ -161,13 +161,14 @@ function removeScriptStyle(text) {
  */
 function removeAdArtifacts(text) {
   const PATTERNS = [
-    // Common web junk phrases (case-insensitive, whole line)
-    /^(read more|click here|subscribe now|sign up|advertisement|sponsored|related:|tags?:|share this|follow us|newsletter)[:\s]*$/gim,
+    // Lines that START with a junk keyword — catches combined phrases too
+    // e.g. "Read more: Click here to subscribe now!"
+    /^(read more|click here|subscribe now|sign up|advertisement|sponsored|related:|tags?:|share this|follow us|newsletter)[^\n]*$/gim,
 
     // GDPR / cookie notice fragments
-    /^(we use cookies|by (continuing|using)|accept (all )?cookies|cookie policy|privacy policy)[^.\n]*[.\n]/gim,
+    /^(we use cookies|by (continuing|using)|accept (all )?cookies|cookie policy|privacy policy)[^.\n]*[.\n]?$/gim,
 
-    // Social share labels
+    // Social share labels (whole line only)
     /^(share on|tweet|pin it|share|like|follow|comment)[:\s]*$/gim,
 
     // Standalone URLs with tracking params — strip the params only

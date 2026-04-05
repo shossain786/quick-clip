@@ -82,23 +82,39 @@ export function convertText(text, options = {}) {
  * @returns {string}
  */
 function convertNumbers(text) {
-  // Skip numbers:
-  //   - preceded by $, ₹, £, €, ¥ (currency)
-  //   - that are 4-digit years (1000–2999)
-  //   - preceded or followed by . (decimals)
-  const NUMBER_RE = /(?<![₹$£€¥])\b([0-9]{1,6})\b(?!\s*[₹$£€¥%])/g;
+  // Strategy: protect ISO dates, currency decimals, and currency results
+  // with placeholders before running number-to-words conversion.
+  // This prevents "2024-08-15" becoming "2024-eight-fifteen" and
+  // "$1,020.00" becoming "$1,twenty.zero".
 
-  return text.replace(NUMBER_RE, (match, numStr) => {
+  const placeholders = [];
+
+  const protect = (str, pattern) =>
+    str.replace(pattern, (match) => {
+      placeholders.push(match);
+      return `%%QC${placeholders.length - 1}%%`;
+    });
+
+  // 1. Protect ISO dates: YYYY-MM-DD
+  let safe = protect(text, /\b(\d{4}-\d{2}-\d{2})\b/g);
+
+  // 2. Protect currency conversion results: ($x,xxx.xx) or (₹x,xxx.xx)
+  safe = protect(safe, /\([₹$][0-9,]+\.[0-9]{1,2}\)/g);
+
+  // 3. Protect decimal numbers: e.g. 3.14, 1,020.00
+  safe = protect(safe, /\b\d[\d,]*\.\d+\b/g);
+
+  // 4. Now safely convert remaining standalone integers
+  const NUMBER_RE = /(?<![₹$£€¥,])\b([0-9]{1,6})\b(?![,\.\d]|[₹$£€¥%])/g;
+
+  safe = safe.replace(NUMBER_RE, (match, numStr) => {
     const num = parseInt(numStr, 10);
-
-    // Skip 4-digit years (1000–2999)
-    if (num >= 1000 && num <= 2999) return match;
-
-    // Skip if number is immediately adjacent to a decimal point
-    // (already handled by the regex, but double-check)
-    const words = numberToWords(num);
-    return words ?? match; // if conversion fails, keep original
+    if (num >= 1000 && num <= 2999) return match; // skip years
+    return numberToWords(num) ?? match;
   });
+
+  // 5. Restore all placeholders
+  return safe.replace(/%%QC(\d+)%%/g, (_, i) => placeholders[parseInt(i, 10)]);
 }
 
 /**
@@ -171,24 +187,28 @@ function numberToWords(n) {
  * @returns {string}
  */
 function convertCurrency(text) {
-  // Match ₹ amounts
+  // Step 1: Convert ₹ → $ and collect the resulting $ amounts
+  // so we can protect them from being re-converted in Step 2.
   const INR_RE = /₹\s?([0-9,]+(?:\.[0-9]{1,2})?)/g;
-  // Match $ amounts (not already followed by a parenthetical conversion)
-  const USD_RE = /\$\s?([0-9,]+(?:\.[0-9]{1,2})?)(?!\s*\(₹)/g;
+
+  // Match $ amounts that are:
+  //   - NOT preceded by ( (i.e. not already a conversion result)
+  //   - NOT already followed by (₹...) (double-conversion guard)
+  const USD_RE = /(?<!\()\$\s?([0-9,]+(?:\.[0-9]{1,2})?)(?!\s*\(₹)/g;
 
   let result = text;
 
-  // ₹ → $ conversion
+  // Step 1: ₹ → $ (appends USD equivalent in parentheses)
   result = result.replace(INR_RE, (match, amountStr) => {
-    const amount    = parseFloat(amountStr.replace(/,/g, ''));
+    const amount = parseFloat(amountStr.replace(/,/g, ''));
     if (isNaN(amount)) return match;
     const converted = (amount * EXCHANGE.INR_TO_USD).toFixed(2);
     return `${match} ($${formatNumber(converted)})`;
   });
 
-  // $ → ₹ conversion (skip ones we just added)
+  // Step 2: $ → ₹ (skips $ amounts inside parentheses from Step 1)
   result = result.replace(USD_RE, (match, amountStr) => {
-    const amount    = parseFloat(amountStr.replace(/,/g, ''));
+    const amount = parseFloat(amountStr.replace(/,/g, ''));
     if (isNaN(amount)) return match;
     const converted = (amount * EXCHANGE.USD_TO_INR).toFixed(2);
     return `${match} (₹${formatNumber(converted)})`;
